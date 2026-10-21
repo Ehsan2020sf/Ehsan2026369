@@ -1,0 +1,1770 @@
+PROJECT NAME:
+NOVIN FORGE AI
+
+PROJECT ID:
+NOVIN-FORGE-AI
+
+MISSION:
+Build a serious, modular, security-first, AI-powered software engineering
+workbench for Android development, ZIP project analysis, controlled code
+integration, automated repair, testing, and continuous project evolution.
+
+This is NOT a simple chatbot, ZIP viewer, code generator, or mock dashboard.
+
+It must be a real engineering application with a visual interface, a
+persistent project workspace, a backend processing engine, an AI reasoning
+layer, security controls, a testing framework, version management,
+approval workflows, and evidence-based reporting.
+
+The primary purpose is to become the engineering environment used to
+develop, repair, maintain, and eventually rebuild NOVIN NEXUS from its
+existing project archives.
+
+==================================================
+1. MASTER ENGINEERING PRINCIPLES
+==================================================
+
+Follow these rules throughout implementation.
+
+1. REALITY FIRST
+
+Never claim that a file was repaired, code was executed, a build succeeded,
+a vulnerability was fixed, or a test passed unless the corresponding
+operation was actually performed and its result was recorded.
+
+Distinguish clearly between:
+- PASS
+- PARTIAL
+- FAIL
+- BLOCKED
+- UNKNOWN
+- NOT TESTED
+- NOT VERIFIED ON DEVICE
+
+Every operation must have an execution status and supporting evidence.
+
+2. PRESERVE THE SOURCE
+
+Never overwrite an uploaded original archive.
+
+Create an immutable source snapshot and calculate its SHA-256 hash.
+
+All modifications must initially occur in an isolated working copy.
+
+The original source must remain recoverable.
+
+3. NO BLIND MERGING
+
+Never merge files merely because their names are similar.
+
+Never delete files merely because their hashes match.
+
+Never automatically replace an existing implementation without
+understanding its role, dependencies, callers, configuration, and tests.
+
+4. EVIDENCE BEFORE CONFIDENCE
+
+Separate verified facts, static-analysis findings, AI-generated hypotheses,
+and unresolved questions.
+
+The AI must not present an assumption as an observed fact.
+
+5. HUMAN APPROVAL
+
+Before modifying the main project, present:
+- The proposed changes.
+- The reasons for each change.
+- The files affected.
+- The expected benefits.
+- Potential regressions.
+- Security implications.
+- Required tests.
+- Rollback strategy.
+
+Require explicit approval before applying a proposed integration to the
+protected main project.
+
+6. REVERSIBILITY
+
+Every approved change must produce a change record.
+
+Where Git is available, use commits, branches, and diffs.
+
+Where Git is unavailable, use immutable snapshots and a transactional
+change journal.
+
+Provide a reliable rollback mechanism.
+
+7. MODULARITY
+
+Use clear interfaces between the frontend, backend, AI providers,
+project analyzer, file processor, security engine, test runner,
+integration engine, and reporting system.
+
+Avoid monolithic architecture.
+
+8. NO FAKE FUNCTIONALITY
+
+Do not create buttons that pretend to perform operations.
+
+Do not use hardcoded success messages for builds or tests.
+
+Do not populate real-looking dashboards with fabricated project metrics.
+
+If a feature cannot yet be implemented, mark it as unavailable or
+not implemented and explain what is missing.
+
+9. INCREMENTAL IMPLEMENTATION
+
+Build and verify the application in small, coherent stages.
+
+After each stage:
+- Inspect the changed files.
+- Run the available checks.
+- Fix discovered regressions.
+- Record the actual results.
+- Continue only when required dependencies are ready.
+
+10. RESOURCE AWARENESS
+
+The application must work within its actual available compute, storage,
+API quotas, execution time, and memory limits.
+
+Do not assume unlimited tokens, unlimited file uploads, unlimited
+cloud execution, or unrestricted network access.
+
+==================================================
+2. PRODUCT EXPERIENCE
+==================================================
+
+Create a professional software engineering environment inspired by
+modern IDEs, project explorers, code review tools, and visual development
+studios.
+
+The interface should be available in Persian and English.
+
+Use a clean, dark-first design with:
+- A project explorer on the left.
+- A central code and diff workspace.
+- An AI engineering assistant.
+- A bottom panel for build logs, tests, terminal output, and diagnostics.
+- A right-side panel for architecture, file details, and security findings.
+- A global status bar for project integrity, current version, and task state.
+
+Make the interface responsive for desktop, tablet, and Android phone screens.
+
+On mobile, use collapsible panels and navigation rather than forcing
+the entire desktop layout onto a small display.
+
+The interface must remain usable on an Android phone.
+
+Main navigation:
+
+1. Dashboard
+2. Projects
+3. ZIP Import Center
+4. Architecture Explorer
+5. Code Workspace
+6. AI Engineering Assistant
+7. Repair Center
+8. Duplicate Detection
+9. Security Center
+10. Test Laboratory
+11. Integration Review
+12. Build Center
+13. Version History
+14. Agent Registry
+15. Internet Research
+16. Reports and Evidence
+17. Settings
+
+Provide a live project status indicator.
+
+Do not use decorative statistics that are not calculated from actual data.
+
+==================================================
+3. PROJECT INTAKE AND ZIP IMPORT ENGINE
+==================================================
+
+Implement a real ZIP upload and inspection workflow.
+
+The user must be able to:
+- Select a ZIP file from the device.
+- Drag and drop a ZIP file on supported desktop browsers.
+- View upload progress.
+- Cancel an upload.
+- Inspect archive metadata.
+- Start a security scan.
+- Preview the detected project structure.
+- Approve creation of a working project.
+
+Support configurable upload limits.
+
+Never trust the filename, extension, MIME type, or metadata supplied
+by the user.
+
+Validate the archive using actual ZIP parsing and integrity checks.
+
+Detect:
+- Invalid ZIP signatures.
+- Corrupted central directories.
+- Truncated archives.
+- Invalid compression data.
+- Unsupported compression methods.
+- Suspiciously high compression ratios.
+- Excessive numbers of entries.
+- Excessive uncompressed sizes.
+- Path traversal attempts.
+- Absolute file paths.
+- Windows drive-letter paths.
+- Symbolic-link abuse.
+- Duplicate archive entries.
+- Case-sensitive and case-insensitive path collisions.
+- Unexpected nested archives.
+- Unsupported file types.
+
+Protect against ZIP bombs.
+
+Enforce limits for:
+- Maximum compressed upload size.
+- Maximum total extracted size.
+- Maximum individual file size.
+- Maximum file count.
+- Maximum extraction depth.
+- Maximum processing time.
+- Maximum memory consumption.
+
+Reject or quarantine unsafe archives.
+
+Never extract files directly into the application's executable directory.
+
+Use a dedicated workspace with canonicalized paths.
+
+Ensure that every extracted destination remains inside the authorized
+workspace directory.
+
+Do not follow symlinks during extraction.
+
+Preserve the original archive unchanged.
+
+After successful inspection, create a project intake report containing:
+
+- Original filename.
+- Original archive size.
+- SHA-256.
+- Number of archive entries.
+- Number of valid files.
+- Number of rejected entries.
+- Total estimated extracted size.
+- Detected project type.
+- Detected frameworks.
+- Detected languages.
+- Build system.
+- Package manifests.
+- Available tests.
+- Security findings.
+- Extraction status.
+- Unresolved uncertainties.
+
+The report must reflect real processing results.
+
+==================================================
+4. AUTOMATIC PROJECT IDENTIFICATION
+==================================================
+
+Identify the project type from its actual contents.
+
+Support initial detection for:
+
+- Native Android projects.
+- Kotlin and Jetpack Compose.
+- Java Android projects.
+- Gradle projects.
+- Android projects with Kotlin DSL.
+- React and TypeScript.
+- JavaScript and Node.js.
+- Python.
+- Flutter and Dart.
+- React Native.
+- Capacitor projects.
+- C and C++.
+- Rust.
+- Go.
+- Multi-module repositories.
+- Mixed-language repositories.
+- Unknown or custom projects.
+
+Use evidence such as:
+- settings.gradle.
+- settings.gradle.kts.
+- build.gradle.
+- build.gradle.kts.
+- gradle.properties.
+- AndroidManifest.xml.
+- package.json.
+- tsconfig.json.
+- pyproject.toml.
+- requirements.txt.
+- pubspec.yaml.
+- Cargo.toml.
+- go.mod.
+- Source file extensions.
+- Directory layout.
+- Existing test and build configuration.
+
+Do not classify a project based on one filename alone.
+
+If the project contains several applications or modules, identify them
+separately.
+
+Produce a project inventory with:
+- File path.
+- File type.
+- Size.
+- SHA-256 where applicable.
+- Module membership.
+- Likely role.
+- Dependencies.
+- Relevant references.
+- Analysis status.
+
+For binary files, use appropriate binary inspection rather than attempting
+to interpret every file as source code.
+
+For unknown files, preserve them and label their role as UNKNOWN.
+
+==================================================
+5. ARCHITECTURE DISCOVERY ENGINE
+==================================================
+
+Before editing an existing project, build a model of its architecture.
+
+Identify:
+- Applications.
+- Modules.
+- Packages.
+- Classes.
+- Functions.
+- Interfaces.
+- Dependencies.
+- Configuration files.
+- Build variants.
+- Entry points.
+- Public APIs.
+- Backend endpoints.
+- Data models.
+- Database entities.
+- Android activities.
+- Android services.
+- Android receivers.
+- Android permissions.
+- Manifest declarations.
+- Dependency injection.
+- Navigation routes.
+- AI providers.
+- Existing agents.
+- Test suites.
+- Build scripts.
+- Existing security controls.
+
+Generate a visual architecture graph.
+
+Each graph node must link to real files or declarations when possible.
+
+Each dependency edge must include its source and confidence.
+
+Distinguish:
+- Confirmed dependency.
+- Statically inferred dependency.
+- AI-inferred relationship.
+- Unknown relationship.
+
+Detect architecture drift by comparing actual code and configuration
+against available project documentation and architectural contracts.
+
+Do not assume that documentation is always correct.
+
+When documentation conflicts with code, report the conflict.
+
+Produce an architecture report before any integration operation.
+
+==================================================
+6. DUPLICATE DETECTION AND SAFE CONSOLIDATION
+==================================================
+
+Create a dedicated duplicate detection engine.
+
+Classify duplicate candidates into:
+
+A. Exact binary duplicates.
+B. Exact text duplicates.
+C. Identical files with different names.
+D. Similar source code.
+E. Similar but independently necessary implementations.
+F. Conflicting implementations.
+G. Generated files.
+H. Build artifacts.
+I. Potentially obsolete files.
+J. Unknown.
+
+Use several levels of analysis:
+
+1. Cryptographic hashes.
+2. Normalized text comparison.
+3. Syntax-aware comparison where parsers are available.
+4. AST-based similarity where supported.
+5. Dependency and reference analysis.
+6. API and behavior comparison.
+7. Test coverage and call-site analysis.
+8. Human review for ambiguous cases.
+
+For each candidate, show:
+- File paths.
+- Hashes.
+- Similarity evidence.
+- Differences.
+- References.
+- Dependencies.
+- Whether both files are used.
+- Risks of consolidation.
+- Recommended action.
+- Confidence level.
+
+Possible recommendations:
+- Keep both.
+- Merge after review.
+- Replace one implementation.
+- Move to an archive.
+- Remove after approval.
+- Investigate further.
+
+Do not automatically merge semantically different code.
+
+Do not automatically delete identical files if both paths are referenced,
+packaged, generated, or required by different modules.
+
+Never remove files from the protected source snapshot.
+
+==================================================
+7. SECURITY ENGINEERING
+==================================================
+
+Implement security as a core system, not an optional feature.
+
+Use defense in depth.
+
+A. Upload security:
+- Archive validation.
+- ZIP bomb protection.
+- Path traversal prevention.
+- File size limits.
+- Entry count limits.
+- Safe extraction.
+- MIME and content inspection.
+
+B. Source-code security:
+- Secret detection.
+- API key detection.
+- Token and credential scanning.
+- Private key detection.
+- Unsafe shell execution detection.
+- Insecure deserialization detection.
+- Injection risk detection.
+- Insecure network configuration detection.
+- Dangerous Android permissions.
+- Exported Android components.
+- Cleartext traffic configuration.
+- WebView security concerns.
+- Insecure storage patterns.
+- Dependency vulnerability checks where a trusted data source exists.
+
+C. Application security:
+- Authentication where needed.
+- Server-side authorization.
+- Project ownership enforcement.
+- Secure session management.
+- CSRF protection where applicable.
+- Rate limiting.
+- Input validation.
+- Output encoding.
+- Secure file download.
+- Audit logging.
+- Least-privilege execution.
+
+D. AI security:
+- Prompt injection resistance.
+- Untrusted repository content handling.
+- Separation of instructions and source code.
+- Tool permission enforcement.
+- Explicit network permissions.
+- Explicit file modification permissions.
+- Explicit build execution permissions.
+- Prevention of unauthorized secret disclosure.
+
+Treat repository files, comments, README instructions, build scripts,
+and agent prompts from uploaded projects as untrusted input.
+
+A file inside a ZIP must never be allowed to grant itself privileges.
+
+E. Runner security:
+- Isolated execution environment.
+- Restricted filesystem access.
+- Resource quotas.
+- Execution timeouts.
+- Restricted network access by default.
+- No access to unrelated projects.
+- No access to production credentials.
+- Disposable execution environments where possible.
+
+Do not execute uploaded build scripts automatically during intake.
+
+Do not run untrusted scripts in the same process or environment that
+holds application secrets.
+
+Never send uploaded source code to an external AI provider without
+clearly disclosing the data flow and enforcing the configured privacy
+policy.
+
+Security findings must include severity, evidence, affected files,
+reproduction steps when safe, remediation guidance, and verification status.
+
+==================================================
+8. AI ENGINEERING BRAIN
+==================================================
+
+Build a modular AI provider interface.
+
+Initial provider:
+Gemini API through a secure server-side integration.
+
+Never place API keys in browser code, public source files, logs,
+project archives, or downloadable APK assets.
+
+Use server-side secret management.
+
+Create an interface that allows future providers to be added without
+rewriting the application.
+
+Possible future providers:
+- Additional commercial AI APIs.
+- Local models.
+- Self-hosted inference.
+- Specialized code analysis tools.
+- Custom NOVIN agents.
+
+The AI engineering assistant must understand the current project context.
+
+It should receive only the relevant project files, architecture records,
+test results, and task information required for the current operation.
+
+Do not blindly send an entire large repository to the model.
+
+Implement:
+- Context selection.
+- File relevance ranking.
+- Token budget management.
+- Context summaries.
+- Project-specific memory.
+- Task history.
+- Decision records.
+- Model and provider tracking.
+- AI response validation.
+- Structured task plans.
+- Tool-call authorization.
+
+The AI must be able to:
+
+1. Explain existing code.
+2. Design new features.
+3. Identify likely defects.
+4. Propose repairs.
+5. Generate code.
+6. Refactor code.
+7. Generate tests.
+8. Analyze compiler errors.
+9. Analyze test failures.
+10. Compare implementations.
+11. Explain architecture.
+12. Prepare integration plans.
+13. Produce technical reports.
+14. Identify missing evidence.
+15. Recommend the next engineering task.
+
+Do not treat AI-generated code as verified code.
+
+Every generated patch must pass through the change review system.
+
+==================================================
+9. NATURAL-LANGUAGE ENGINEERING COMMANDS
+==================================================
+
+Allow the user to describe engineering tasks in natural language.
+
+Example commands:
+
+"Analyze this NOVIN ZIP."
+
+"Find duplicate files."
+
+"Identify security problems."
+
+"Repair the compilation errors."
+
+"Explain the Android architecture."
+
+"Add a new agent management module."
+
+"Integrate this new code with the existing project."
+
+"Compare these two implementations."
+
+"Find why this test fails."
+
+"Prepare a plan to add offline AI support."
+
+"Review the changes and tell me whether they are safe."
+
+"Build an APK if the build environment supports it."
+
+Convert each request into a structured engineering task.
+
+Each task should contain:
+- Task ID.
+- User request.
+- Project and version.
+- Goal.
+- Scope.
+- Constraints.
+- Files allowed to change.
+- Required capabilities.
+- Planned steps.
+- Required tests.
+- Approval requirements.
+- Execution status.
+- Evidence.
+- Final report.
+
+Before making significant changes, show the user a plan.
+
+Ask clarification questions only when a missing decision materially
+affects correctness or safety.
+
+Do not ask the user to approve every harmless read-only operation.
+
+==================================================
+10. CODE REPAIR ENGINE
+==================================================
+
+Implement a controlled repair workflow.
+
+Step 1:
+Reproduce or identify the problem.
+
+Step 2:
+Collect actual error messages, logs, source locations, and relevant
+configuration.
+
+Step 3:
+Determine the most likely root cause.
+
+Step 4:
+Separate confirmed causes from hypotheses.
+
+Step 5:
+Inspect affected dependencies and callers.
+
+Step 6:
+Prepare one or more candidate patches.
+
+Step 7:
+Show the exact file changes.
+
+Step 8:
+Run appropriate static checks.
+
+Step 9:
+Run relevant tests in the isolated environment.
+
+Step 10:
+Compare results against the original baseline.
+
+Step 11:
+Check for regressions.
+
+Step 12:
+Present the proposed patch and evidence for approval.
+
+Step 13:
+Apply the patch to the approved working branch.
+
+Step 14:
+Record the resulting version and test status.
+
+Never hide a failing test merely because a different test passed.
+
+Never delete a test just to make a build appear successful.
+
+Never weaken security controls to silence a scanner without explicit
+technical justification and review.
+
+When a repair cannot be verified, mark it NOT VERIFIED.
+
+When the required compiler, SDK, device, dependency, or service is
+unavailable, mark the operation BLOCKED and identify the missing
+capability.
+
+==================================================
+11. CONTROLLED PROJECT INTEGRATION
+==================================================
+
+This is one of the most important modules.
+
+The user may provide:
+- An existing NOVIN project.
+- A second ZIP with additional features.
+- Code generated by another AI.
+- An isolated source file.
+- A new module.
+- A new agent.
+- A bug fix.
+- A replacement implementation.
+
+Never merge an input archive directly into the main project.
+
+Use the following workflow.
+
+PHASE A: SOURCE REGISTRATION
+
+Register the incoming artifact.
+
+Calculate its hash.
+
+Record its origin and upload time.
+
+Preserve the original.
+
+PHASE B: SOURCE ANALYSIS
+
+Determine the actual file types, modules, APIs, dependencies,
+configuration, and intended purpose.
+
+PHASE C: BASELINE COMPARISON
+
+Compare the incoming artifact with the current project.
+
+Identify:
+- New files.
+- Existing files with identical content.
+- Existing files with different content.
+- Conflicting APIs.
+- Duplicate functionality.
+- Dependency conflicts.
+- Package conflicts.
+- Configuration conflicts.
+- Missing dependencies.
+- Potential security regressions.
+- Required migrations.
+
+PHASE D: INTEGRATION DESIGN
+
+Determine the appropriate integration strategy.
+
+Possible strategies:
+- Add a new module.
+- Extend an existing module.
+- Replace an implementation.
+- Adapt an API.
+- Introduce an adapter.
+- Add an interface.
+- Migrate a data model.
+- Update configuration.
+- Reject the proposed integration.
+- Request further information.
+
+Prefer minimal, cohesive, reversible changes.
+
+Do not create a new abstraction merely for appearance.
+
+Do not introduce unnecessary frameworks or dependencies.
+
+PHASE E: IMPACT ANALYSIS
+
+Show the user:
+- Files to add.
+- Files to modify.
+- Files that may be removed.
+- Dependencies to add or update.
+- APIs affected.
+- Existing features at risk.
+- Security implications.
+- Tests required.
+- Rollback strategy.
+
+PHASE F: PREVIEW
+
+Display a unified diff and a file-by-file explanation.
+
+Provide a side-by-side comparison where appropriate.
+
+Allow the user to inspect every proposed change.
+
+PHASE G: APPROVAL
+
+Require explicit user approval before modifying the protected main project.
+
+PHASE H: SANDBOX INTEGRATION
+
+Apply approved changes to an isolated branch or working copy.
+
+PHASE I: VERIFICATION
+
+Run available static analysis, tests, dependency checks, and builds.
+
+Compare the result with the baseline.
+
+PHASE J: ACCEPTANCE
+
+Present the evidence and request final approval before promoting
+the candidate into the protected main project.
+
+PHASE K: RECORD
+
+Save the accepted version, hashes, change records, test results,
+and final engineering report.
+
+If any mandatory gate fails, do not silently promote the candidate.
+
+==================================================
+12. ANDROID ENGINEERING LABORATORY
+==================================================
+
+Provide specialized support for Android projects.
+
+Analyze:
+- AndroidManifest.xml.
+- Kotlin and Java source.
+- Gradle build files.
+- Gradle wrapper configuration.
+- Version catalogs.
+- Android SDK requirements.
+- Minimum SDK.
+- Target SDK.
+- Compile SDK.
+- Build variants.
+- Product flavors.
+- Application ID.
+- Namespace.
+- Permissions.
+- Activities.
+- Services.
+- Broadcast receivers.
+- Content providers.
+- Navigation.
+- Compose UI.
+- Android lifecycle.
+- Background execution.
+- Network configuration.
+- Storage.
+- Room and SQLite where present.
+- Dependency injection.
+- Unit tests.
+- Instrumentation tests.
+- Existing APK or AAB artifacts.
+
+Detect:
+- Gradle configuration errors.
+- Missing dependencies.
+- Kotlin compilation failures.
+- Manifest conflicts.
+- Duplicate declarations.
+- Namespace inconsistencies.
+- Incompatible dependency versions.
+- Incorrect API usage.
+- Missing resources.
+- Resource collisions.
+- Lifecycle problems.
+- Potential crashes.
+- Unsafe permissions.
+- Potential performance issues.
+
+Use the project's existing supported toolchain where possible.
+
+Do not automatically upgrade every dependency to the latest version.
+
+Do not change package names, application IDs, namespaces, signing
+configuration, or database schemas without analyzing the consequences.
+
+Do not overwrite existing signing keys or release configuration.
+
+Never embed private signing keys or production credentials in the project.
+
+Build outputs must be labeled with:
+- Project version.
+- Build variant.
+- Build environment.
+- Build command.
+- Build status.
+- Artifact hash.
+- Relevant logs.
+
+A successful compile does not prove the application works correctly
+on a physical device.
+
+Separate:
+- Static analysis.
+- Unit test results.
+- Instrumentation test results.
+- Build verification.
+- Emulator verification.
+- Physical-device verification.
+
+Provide a clear report for each available level.
+
+==================================================
+13. TEST LABORATORY
+==================================================
+
+Implement a real test execution and evidence collection system.
+
+Support, where the required tools are installed:
+- Unit tests.
+- Integration tests.
+- Static analysis.
+- Lint.
+- Type checking.
+- Formatting checks.
+- Dependency checks.
+- Security scanning.
+- Build verification.
+- Regression tests.
+- API contract tests.
+- Archive integrity tests.
+- Android instrumentation tests.
+
+Discover test commands from actual project configuration.
+
+Do not invent test commands and report them as executed.
+
+Capture:
+- Exact command.
+- Working directory.
+- Environment identifier.
+- Start time.
+- End time.
+- Exit code.
+- Standard output.
+- Standard error.
+- Test count.
+- Passed count.
+- Failed count.
+- Skipped count.
+- Missing prerequisites.
+- Evidence location.
+
+Redact secrets from logs.
+
+Use timeouts and resource limits.
+
+If execution is unavailable, provide the command that would be needed
+and mark the result NOT TESTED or BLOCKED.
+
+Maintain a regression baseline.
+
+Do not declare a candidate healthy solely because compilation succeeded.
+
+==================================================
+14. VISUAL CODE STUDIO
+==================================================
+
+Build an interactive workspace with:
+
+- File explorer.
+- Syntax-highlighted code editor.
+- Search across files.
+- Search within a file.
+- Symbol navigation where supported.
+- File metadata.
+- Architecture links.
+- Git or snapshot history.
+- Unified diff.
+- Side-by-side diff.
+- Change annotations.
+- Diagnostics panel.
+- Test output panel.
+- Build log panel.
+- AI explanation panel.
+- Read-only source inspection.
+- Editable working-copy files.
+
+The user must be able to select a file and ask:
+
+"What does this file do?"
+
+"Find the bug."
+
+"Explain its dependencies."
+
+"Suggest a safer implementation."
+
+"Refactor this code."
+
+"Generate tests."
+
+"Compare this implementation with another file."
+
+The AI must use the actual file content and relevant project context.
+
+Do not display a simulated terminal as if it were a real terminal.
+
+If a real terminal is implemented, run it through a restricted execution
+service, not through arbitrary shell execution in the public frontend.
+
+If a terminal is not available, label the panel as a command console
+or execution log viewer.
+
+==================================================
+15. INTERNET RESEARCH AND DEPENDENCY INTELLIGENCE
+==================================================
+
+Create a controlled research module.
+
+Possible sources:
+- Official Android documentation.
+- Official Kotlin documentation.
+- Official Gradle documentation.
+- Official library repositories.
+- Official GitHub repositories.
+- Package registries.
+- Security advisories.
+- Trusted technical documentation.
+
+For every research result, record:
+- URL.
+- Source name.
+- Retrieval time.
+- Relevant excerpt or summary.
+- Version information.
+- Relevance to the current task.
+- Confidence.
+- Any unresolved uncertainty.
+
+Prefer official documentation for API behavior.
+
+Verify compatibility with the actual project toolchain.
+
+Do not blindly copy code from arbitrary websites.
+
+Do not execute downloaded code automatically.
+
+Before installing a dependency, inspect:
+- Package identity.
+- Version.
+- License where available.
+- Maintenance status.
+- Known vulnerabilities.
+- Transitive dependencies.
+- Compatibility.
+- Required permissions.
+- Whether the dependency is actually necessary.
+
+Internet access must be controlled by explicit backend policies.
+
+Do not permit arbitrary external requests from uploaded scripts.
+
+Do not send private project code to external services without an
+authorized data-sharing policy.
+
+If internet access is unavailable, explain the limitation.
+
+==================================================
+16. AGENT REGISTRY AND FUTURE MULTI-AGENT SYSTEM
+==================================================
+
+Design a modular agent architecture that can be extended later.
+
+Potential specialized agents:
+
+1. Architecture Analyst.
+2. Android Engineer.
+3. Kotlin Specialist.
+4. Java Specialist.
+5. Frontend Engineer.
+6. Backend Engineer.
+7. Security Auditor.
+8. Duplicate Detection Agent.
+9. Code Repair Agent.
+10. Test Engineer.
+11. Dependency Analyst.
+12. Documentation Agent.
+13. Integration Architect.
+14. Build Engineer.
+15. Release Auditor.
+16. NOVIN Project Context Agent.
+
+Do not pretend these agents already exist.
+
+Implement an agent registry with explicit states:
+
+- REGISTERED.
+- AVAILABLE.
+- DISABLED.
+- UNAVAILABLE.
+- RUNNING.
+- FAILED.
+
+Each agent definition should specify:
+- Agent ID.
+- Name.
+- Version.
+- Purpose.
+- Supported tasks.
+- Required tools.
+- Permissions.
+- Input schema.
+- Output schema.
+- Timeout.
+- Resource limits.
+- Error handling.
+- Audit requirements.
+
+Agents must not be able to grant themselves additional permissions.
+
+Use a central orchestrator to assign tasks.
+
+Require approval for privileged operations.
+
+Use structured messages rather than unrestricted shared prompts.
+
+Prevent conflicting agents from modifying the same files concurrently.
+
+When multiple agents review a task, consolidate their findings and
+identify disagreements.
+
+The system must distinguish implemented agents from planned agents.
+
+==================================================
+17. SELF-IMPROVEMENT WITHOUT UNCONTROLLED SELF-MODIFICATION
+==================================================
+
+The application should be able to improve its engineering capabilities
+through controlled changes.
+
+It may:
+- Analyze its own source code.
+- Identify defects.
+- Suggest architectural improvements.
+- Generate candidate patches.
+- Generate additional tests.
+- Compare alternative implementations.
+- Evaluate new plugins.
+- Propose new agents.
+- Improve its documentation.
+- Prepare a new candidate version.
+
+However, never allow the running production application to modify
+its own executable code and immediately trust that code.
+
+Treat the application source, user projects, and execution environment
+as separate security boundaries.
+
+Self-improvement must follow:
+
+1. Identify a measurable problem.
+2. Collect evidence.
+3. Propose an improvement.
+4. Generate a candidate patch.
+5. Run static checks.
+6. Run relevant tests.
+7. Compare against the current baseline.
+8. Review security and architecture impact.
+9. Request approval when required.
+10. Promote the approved candidate.
+11. Preserve rollback capability.
+12. Record the outcome.
+
+Do not claim the system learns permanently from an interaction unless
+a real persistence mechanism records the relevant information.
+
+Do not claim the system can autonomously solve every programming task.
+
+==================================================
+18. PROJECT MEMORY AND KNOWLEDGE BASE
+==================================================
+
+Create persistent, project-scoped memory.
+
+Store:
+- Project identity.
+- Project versions.
+- Architecture summaries.
+- Important decisions.
+- API contracts.
+- Known defects.
+- Previous fixes.
+- Failed approaches.
+- Test baselines.
+- Dependency decisions.
+- Security findings.
+- Accepted conventions.
+- User-approved constraints.
+- Integration history.
+
+Use structured records instead of relying exclusively on a long chat
+history.
+
+Keep project memory separate from executable source files.
+
+Provide controls to:
+- Inspect stored project knowledge.
+- Correct inaccurate records.
+- Export project documentation.
+- Remove project data according to the configured retention policy.
+- Rebuild project context from source code.
+
+Every stored decision should identify its source, date, and status.
+
+Distinguish verified facts from old assumptions.
+
+When source code changes, identify which architecture summaries or
+decisions may now be stale.
+
+==================================================
+19. REPORTING AND EVIDENCE CENTER
+==================================================
+
+After every major operation, generate a professional report.
+
+The report must include:
+
+A. OPERATION SUMMARY
+- Task ID.
+- Project ID.
+- Source version.
+- Candidate version.
+- Requested objective.
+- Actual actions performed.
+
+B. PROJECT INVENTORY
+- Files discovered.
+- Modules discovered.
+- Languages.
+- Frameworks.
+- Build configuration.
+- Test configuration.
+
+C. DUPLICATE ANALYSIS
+- Exact duplicates.
+- Similar implementations.
+- Conflicts.
+- Recommended consolidation.
+- Changes actually made.
+
+D. SECURITY ANALYSIS
+- Findings.
+- Severity.
+- Affected files.
+- Evidence.
+- Remediation status.
+
+E. REPAIR ANALYSIS
+- Original errors.
+- Root-cause findings.
+- Files changed.
+- Explanation of each fix.
+- Remaining issues.
+
+F. INTEGRATION ANALYSIS
+- Added files.
+- Modified files.
+- Removed files, if explicitly approved.
+- Dependencies changed.
+- API changes.
+- Compatibility risks.
+
+G. TEST RESULTS
+- Tests executed.
+- Commands.
+- Exit codes.
+- Pass/fail counts.
+- Blocked tests.
+- Regression findings.
+
+H. BUILD RESULTS
+- Build environment.
+- Build variant.
+- Artifact information.
+- Build status.
+- Verification level.
+
+I. APPROVAL STATUS
+- Awaiting approval.
+- Approved.
+- Rejected.
+- Applied to working branch.
+- Promoted to main project.
+
+J. REMAINING RISKS
+- Unverified behavior.
+- Missing tools.
+- Missing device access.
+- Incomplete tests.
+- Known limitations.
+
+K. NEXT RECOMMENDATIONS
+- Prioritized tasks.
+- Required decisions.
+- Estimated complexity.
+- Dependencies.
+
+Generate downloadable reports in JSON and Markdown.
+
+Support HTML or PDF export when implemented.
+
+Keep reports connected to their underlying evidence records.
+
+Do not fabricate timestamps, logs, test results, or version identifiers.
+
+==================================================
+20. VERSION MANAGEMENT AND ROLLBACK
+==================================================
+
+Create a reliable project versioning system.
+
+Each version should contain:
+- Project ID.
+- Version ID.
+- Parent version.
+- Source hash.
+- Change set.
+- Build configuration.
+- Test summary.
+- Security summary.
+- Approval record.
+- Creation timestamp.
+- Artifact hashes where applicable.
+
+Use semantic versioning where appropriate, supplemented by a unique
+build or revision identifier.
+
+Keep uploaded archives immutable.
+
+Maintain a protected main branch or equivalent immutable baseline.
+
+Perform changes in isolated candidate branches or snapshots.
+
+Provide:
+- Version comparison.
+- File-level diff.
+- Change history.
+- Rollback preview.
+- Approved rollback execution.
+- Version integrity verification.
+
+Never overwrite a known-good version without preserving a recoverable copy.
+
+==================================================
+21. DATA STORAGE AND PRIVACY
+==================================================
+
+Implement storage appropriate for a real multi-project application.
+
+Use a database for structured metadata.
+
+Use controlled object or filesystem storage for project archives,
+source files, artifacts, and reports.
+
+Do not use in-memory state as the only persistence mechanism.
+
+Enforce project-level authorization on every backend operation.
+
+Prevent one user or project from reading another project's files.
+
+Use secure upload and download endpoints.
+
+Avoid exposing internal filesystem paths.
+
+Do not log API keys, passwords, tokens, signing secrets, or private keys.
+
+Define configurable retention policies.
+
+Provide project export and deletion workflows.
+
+Clearly document which information is stored locally, remotely, and
+sent to an AI provider.
+
+If a persistent database or storage service is unavailable in the
+current environment, implement a clearly labeled development mode
+and do not pretend that it provides production-grade persistence.
+
+==================================================
+22. TECHNICAL ARCHITECTURE
+==================================================
+
+Prefer a modular monorepo where appropriate.
+
+Suggested initial structure:
+
+novin-forge-ai/
+  apps/
+    web/
+    api/
+
+  packages/
+    shared-types/
+    project-analyzer/
+    archive-engine/
+    security-engine/
+    duplicate-engine/
+    architecture-engine/
+    repair-engine/
+    integration-engine/
+    test-orchestrator/
+    reporting-engine/
+    ai-orchestrator/
+
+  workers/
+    project-analysis-worker/
+    test-runner-worker/
+
+  infrastructure/
+    deployment/
+    database/
+    runner/
+
+  docs/
+    architecture/
+    security/
+    operations/
+    testing/
+
+  tests/
+    unit/
+    integration/
+    security/
+    regression/
+
+Adapt this structure to the actual framework and environment.
+
+Do not create empty directories and claim their functionality exists.
+
+For the initial implementation, prioritize a smaller number of complete,
+working modules over a large number of empty placeholders.
+
+Use strict TypeScript where appropriate.
+
+Use schema validation at trust boundaries.
+
+Use clear error types.
+
+Use structured logs.
+
+Use database migrations when applicable.
+
+Keep secrets server-side.
+
+Add automated tests for security-critical code.
+
+==================================================
+23. API AND INTERNAL CONTRACTS
+==================================================
+
+Define explicit contracts for:
+
+- Project creation.
+- Archive upload.
+- Archive validation.
+- Project analysis.
+- Architecture discovery.
+- Duplicate analysis.
+- Security scanning.
+- AI task planning.
+- Patch creation.
+- Diff review.
+- Approval.
+- Test execution.
+- Build execution.
+- Version creation.
+- Rollback.
+- Report retrieval.
+
+Use validated request and response schemas.
+
+Use asynchronous jobs for long-running tasks.
+
+Each job must have:
+- Unique ID.
+- State.
+- Progress.
+- Cancellation support where safe.
+- Timeout.
+- Error details.
+- Evidence references.
+- Completion status.
+
+Never use a successful HTTP response as proof that the underlying
+build or test operation succeeded.
+
+Expose the actual job status.
+
+==================================================
+24. ERROR HANDLING AND RECOVERY
+==================================================
+
+Implement explicit recovery behavior for:
+
+- Failed ZIP uploads.
+- Interrupted uploads.
+- Invalid archives.
+- Extraction errors.
+- Corrupted files.
+- AI provider failures.
+- Rate limits.
+- Network interruptions.
+- Database failures.
+- Worker crashes.
+- Build timeouts.
+- Test failures.
+- Dependency installation failures.
+- Interrupted integrations.
+- Failed rollbacks.
+
+Use idempotent operations where practical.
+
+Do not retry destructive operations blindly.
+
+Do not repeat an integration if the previous operation may already
+have modified the candidate workspace.
+
+Use operation IDs and persistent execution records.
+
+When a failure occurs, preserve diagnostic evidence and return the
+workspace to a known safe state when possible.
+
+==================================================
+25. ACCEPTANCE CRITERIA
+==================================================
+
+The first release must not be declared complete merely because
+the user interface renders.
+
+Verify these requirements individually.
+
+G0: Application starts in the actual target environment.
+
+G1: The user can create and persist a project.
+
+G2: A valid ZIP can be uploaded and inspected.
+
+G3: An invalid ZIP is rejected safely.
+
+G4: Archive path traversal is prevented.
+
+G5: ZIP bomb limits are enforced.
+
+G6: Original source archives remain unchanged.
+
+G7: A real project inventory is generated.
+
+G8: The project type is detected from actual evidence.
+
+G9: Duplicate candidates are identified and explained.
+
+G10: Security scanning produces evidence-backed findings.
+
+G11: The AI can inspect authorized project context.
+
+G12: A candidate patch can be created without modifying the protected
+     source baseline.
+
+G13: A real diff can be displayed.
+
+G14: Unauthorized changes cannot be promoted.
+
+G15: A supported test can be executed and its real result recorded.
+
+G16: Build status reflects actual execution.
+
+G17: Failed operations are visible and recoverable where possible.
+
+G18: Project history survives application restart.
+
+G19: Reports are generated from actual operation records.
+
+G20: Rollback can be tested without destroying the baseline.
+
+G21: Secrets do not appear in browser bundles or generated reports.
+
+G22: Project-level access controls are tested.
+
+G23: Core workflows are usable on Android-sized screens.
+
+G24: The application has automated regression tests.
+
+G25: All remaining limitations are documented.
+
+For every gate, record:
+
+- Status.
+- Evidence.
+- Test method.
+- Result.
+- Remaining limitation.
+
+Allowed statuses:
+
+PASS
+PARTIAL
+FAIL
+BLOCKED
+UNKNOWN
+NOT TESTED
+NOT VERIFIED
+
+A gate may be marked PASS only when its acceptance condition is
+actually demonstrated.
+
+==================================================
+26. IMPLEMENTATION ROADMAP
+==================================================
+
+Build the product in these stages.
+
+PHASE 1: FOUNDATION
+
+- Create the actual application.
+- Establish frontend and backend boundaries.
+- Implement the dashboard.
+- Implement project creation.
+- Implement persistent project metadata.
+- Implement ZIP upload.
+- Implement safe archive validation.
+- Implement the project inventory.
+
+PHASE 2: ANALYSIS
+
+- Project type detection.
+- Architecture discovery.
+- File metadata.
+- Hash calculation.
+- Duplicate detection.
+- Basic security scanning.
+- Evidence-based reports.
+
+PHASE 3: AI ENGINEERING
+
+- Secure Gemini integration.
+- Project-context selection.
+- Natural-language task planning.
+- Code explanation.
+- Candidate patch generation.
+- AI response validation.
+
+PHASE 4: CHANGE CONTROL
+
+- Working copies.
+- File diffs.
+- Approval workflows.
+- Change journals.
+- Git integration where available.
+- Rollback.
+
+PHASE 5: TESTING
+
+- Test discovery.
+- Restricted job execution.
+- Logs.
+- Test result parsing.
+- Regression analysis.
+- Build orchestration.
+
+PHASE 6: ANDROID SPECIALIZATION
+
+- Android project inspection.
+- Gradle diagnostics.
+- Manifest analysis.
+- Kotlin and Java analysis.
+- Android build integration.
+- Emulator and device verification integrations where available.
+
+PHASE 7: ADVANCED ENGINEERING
+
+- Multi-agent orchestration.
+- Controlled internet research.
+- Dependency intelligence.
+- Advanced duplicate analysis.
+- Automated repair proposals.
+- Architecture drift detection.
+
+PHASE 8: HARDENING
+
+- Security testing.
+- Authorization testing.
+- Recovery testing.
+- Performance testing.
+- Persistence testing.
+- Deployment hardening.
+- Documentation.
+- Final acceptance report.
+
+Do not implement all phases as fake interfaces in the first iteration.
+
+Complete the foundation first, then expand incrementally.
+
+==================================================
+27. FIRST EXECUTION INSTRUCTIONS
+==================================================
+
+Begin by evaluating the actual capabilities of the current
+Google AI Studio environment.
+
+Determine:
+- Available frontend framework.
+- Available backend runtime.
+- Available package manager.
+- Available persistent storage.
+- Available database integration.
+- Available AI provider integration.
+- Available file upload capabilities.
+- Available execution capabilities.
+- Available deployment options.
+- Any restrictions affecting Android builds.
+
+Do not assume a tool exists simply because this specification mentions it.
+
+If an essential capability is missing, explain the limitation and
+implement a clean adapter or interface for a future integration.
+
+Then implement PHASE 1.
+
+Do not stop after writing a plan or rendering a dashboard.
+
+Create the real source files, implement the working upload and project
+intake workflow, run the checks available in the environment, and
+show the actual results.
+
+Use the application's own project structure as the first test case
+where appropriate.
+
+Do not recursively import the running application's source into itself
+or modify its own runtime during intake.
+
+After Phase 1, produce a report containing:
+- Implemented components.
+- Important files created.
+- Architecture decisions.
+- Actual tests executed.
+- Actual test results.
+- Security controls implemented.
+- Known defects.
+- Blocked requirements.
+- Next implementation steps.
+
+If the full implementation cannot fit into one generation cycle,
+continue from the existing codebase.
+
+Never restart the project from scratch merely because a later task
+requires an additional feature.
+
+Preserve existing working code unless a justified change is necessary.
+
+END OF MASTER SPECIFICATION.

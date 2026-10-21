@@ -1,0 +1,6 @@
+{
+  "name": "NOVIN FORGE AI",
+  "description": "Security-first AI software engineering workbench for Android development, ZIP project analysis, controlled code integration, automated repair, testing, and continuous evolution.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
