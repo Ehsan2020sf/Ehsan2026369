@@ -10,6 +10,8 @@ export const translations = {
     languageToggle: 'فارسی',
 
     // Nav items
+    nav_self_dev: 'Self-Development Lab',
+    nav_visual_studio: 'Visual Engineering Studio',
     nav_dashboard: 'Dashboard',
     nav_projects: 'Projects',
     nav_zip_import: 'ZIP Import Center',
@@ -68,6 +70,8 @@ export const translations = {
     languageToggle: 'English',
 
     // Nav items
+    nav_self_dev: 'آزمایشگاه خودتوسعه‌گر نوین',
+    nav_visual_studio: 'استودیو مهندسی بصری',
     nav_dashboard: 'داشبورد جامع',
     nav_projects: 'مدیریت پروژه‌ها',
     nav_zip_import: 'ورود و اعتبارسنجی ZIP',

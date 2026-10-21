@@ -229,6 +229,58 @@ export interface AcceptanceGate {
   remainingLimitation: string;
 }
 
+export interface FileInventoryEntry {
+  path: string;
+  name: string;
+  extension: string;
+  size: number;
+  linesCount: number;
+  sha256: string;
+  role: FileRole;
+  module?: string;
+  callSitesCount: number;
+  baselineSha256?: string;
+  mutationStatus: 'UNMODIFIED' | 'MODIFIED' | 'ADDED' | 'DELETED';
+}
+
+export interface AndroidStaticAnalysisReport {
+  packageName?: string;
+  versionCode?: string;
+  versionName?: string;
+  minSdkVersion?: number;
+  targetSdkVersion?: number;
+  compileSdkVersion?: number;
+  usesCleartextTraffic: boolean;
+  allowBackup: boolean;
+  exportedActivitiesCount: number;
+  unprotectedExportedActivities: string[];
+  exportedServicesCount: number;
+  exportedReceiversCount: number;
+  dangerousPermissions: string[];
+  gradlePlugins: string[];
+  gradleDependencies: string[];
+  versionCatalogLibraries: string[];
+  toolchainStatus: {
+    tool: string;
+    available: boolean;
+    reason: string;
+    executionMode: 'NATIVE' | 'IN_SANDBOX_STATIC' | 'SIMULATED' | 'BLOCKED';
+  }[];
+  conformanceScore: number; // 0-100
+  complianceViolations: string[];
+}
+
+export interface RegressionAuditResult {
+  timestamp: string;
+  baselineVersionId: string;
+  currentVersionId: string;
+  regressedTests: { suiteName: string; previousStatus: ExecutionStatus; currentStatus: ExecutionStatus }[];
+  resolvedIssues: string[];
+  newSecurityFindings: SecurityFinding[];
+  hasRegressions: boolean;
+  summary: string;
+}
+
 export interface Project {
   id: string;
   name: string;
@@ -251,4 +303,7 @@ export interface Project {
   testRecords: TestExecutionRecord[];
   buildRecords: BuildRecord[];
   activeTask?: EngineeringTask;
+  fileInventory?: FileInventoryEntry[];
+  androidAnalysis?: AndroidStaticAnalysisReport;
+  regressionAudit?: RegressionAuditResult;
 }

@@ -11,11 +11,11 @@ export interface ZipProcessingLimits {
 }
 
 export const DEFAULT_ZIP_LIMITS: ZipProcessingLimits = {
-  maxCompressedSizeBytes: 50 * 1024 * 1024,
-  maxUncompressedSizeBytes: 150 * 1024 * 1024,
-  maxEntriesCount: 3000,
-  maxCompressionRatio: 50,
-  maxIndividualFileSizeBytes: 20 * 1024 * 1024,
+  maxCompressedSizeBytes: 100 * 1024 * 1024, // 100 MB
+  maxUncompressedSizeBytes: 300 * 1024 * 1024, // 300 MB
+  maxEntriesCount: 25000, // Accommodate complex multi-module repositories (e.g. NOVIN NEXUS monolith with ~12.5k files)
+  maxCompressionRatio: 100, // 100x
+  maxIndividualFileSizeBytes: 50 * 1024 * 1024, // 50 MB
 };
 
 function inferFileRole(path: string): FileRole {
@@ -41,6 +41,66 @@ function inferFileRole(path: string): FileRole {
 function isBinaryExtension(ext: string): boolean {
   const binaryExts = ['png', 'jpg', 'jpeg', 'gif', 'ico', 'webp', 'pdf', 'zip', 'tar', 'gz', 'so', 'jar', 'aar', 'dex', 'class', 'apk', 'aab', 'bin', 'exe'];
   return binaryExts.includes(ext.toLowerCase());
+}
+
+/**
+ * Low-level binary scan of local file headers and central directory headers.
+ * Catches path traversal sequences (../, ..\, /etc, C:\) even if high-level libraries normalize them.
+ */
+function scanRawZipHeadersForTraversal(buffer: ArrayBuffer): { path: string; reason: string }[] {
+  const rejected: { path: string; reason: string }[] = [];
+  const u8 = new Uint8Array(buffer);
+  const view = new DataView(buffer);
+
+  // Scan for Local File Header signature 0x04034b50 (PK\x03\x04)
+  for (let i = 0; i <= u8.length - 30; i++) {
+    if (u8[i] === 0x50 && u8[i + 1] === 0x4b && u8[i + 2] === 0x03 && u8[i + 3] === 0x04) {
+      const fileNameLen = view.getUint16(i + 26, true);
+      if (fileNameLen > 0 && i + 30 + fileNameLen <= u8.length) {
+        const rawFileNameBytes = u8.slice(i + 30, i + 30 + fileNameLen);
+        const fileName = new TextDecoder('utf-8').decode(rawFileNameBytes);
+        if (
+          fileName.includes('../') ||
+          fileName.includes('..\\') ||
+          fileName.startsWith('/') ||
+          /^[a-zA-Z]:/.test(fileName)
+        ) {
+          if (!rejected.some((r) => r.path === fileName)) {
+            rejected.push({
+              path: fileName,
+              reason: 'Path traversal attempt or absolute path detected in raw local file header.',
+            });
+          }
+        }
+      }
+    }
+  }
+
+  // Scan for Central Directory Header signature 0x02014b50 (PK\x01\x02)
+  for (let i = 0; i <= u8.length - 46; i++) {
+    if (u8[i] === 0x50 && u8[i + 1] === 0x4b && u8[i + 2] === 0x01 && u8[i + 3] === 0x02) {
+      const fileNameLen = view.getUint16(i + 28, true);
+      if (fileNameLen > 0 && i + 46 + fileNameLen <= u8.length) {
+        const rawFileNameBytes = u8.slice(i + 46, i + 46 + fileNameLen);
+        const fileName = new TextDecoder('utf-8').decode(rawFileNameBytes);
+        if (
+          fileName.includes('../') ||
+          fileName.includes('..\\') ||
+          fileName.startsWith('/') ||
+          /^[a-zA-Z]:/.test(fileName)
+        ) {
+          if (!rejected.some((r) => r.path === fileName)) {
+            rejected.push({
+              path: fileName,
+              reason: 'Path traversal attempt or absolute path detected in raw central directory.',
+            });
+          }
+        }
+      }
+    }
+  }
+
+  return rejected;
 }
 
 /**
@@ -158,10 +218,16 @@ export async function processZipArchive(
     };
   }
 
+  // Check 3: Raw Binary Header Traversal Scan (Defense-in-depth against pre-normalized path entries)
+  const rawHeaderTraversalViolations = scanRawZipHeadersForTraversal(arrayBuffer);
+  for (const v of rawHeaderTraversalViolations) {
+    rejectedEntries.push(v);
+  }
+
   const rawEntries = Object.keys(zip.files);
   const totalEntries = rawEntries.length;
 
-  // Check 3: Entry count limit
+  // Check 4: Entry count limit
   if (totalEntries > limits.maxEntriesCount) {
     errors.push(`Archive contains ${totalEntries} entries, exceeding limit of ${limits.maxEntriesCount}`);
     return {

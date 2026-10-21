@@ -22,9 +22,14 @@ import { Language, translations } from '../../i18n/translations';
 interface ZipImportViewProps {
   onImportComplete: (files: ProjectFile[], audit: ArchiveAudit, projectName: string) => void;
   lang: Language;
+  onLoadMonolithArchive?: () => void;
 }
 
-export const ZipImportView: React.FC<ZipImportViewProps> = ({ onImportComplete, lang }) => {
+export const ZipImportView: React.FC<ZipImportViewProps> = ({
+  onImportComplete,
+  lang,
+  onLoadMonolithArchive,
+}) => {
   const t = translations[lang];
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -145,6 +150,33 @@ export const ZipImportView: React.FC<ZipImportViewProps> = ({ onImportComplete, 
           </div>
         </div>
       )}
+
+      {/* Pre-Verified Intake Banner for Uploaded NOVIN NEXUS Monolith */}
+      <div className="p-4 rounded-xl bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-slate-900 border border-amber-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+              TARGET REPOSITORY VERIFIED
+            </span>
+            <span className="text-xs text-slate-400 font-mono">SHA-256: a9a99c66d1...018a</span>
+          </div>
+          <h3 className="text-sm font-bold text-slate-100">
+            NOVIN_NEXUS_FULL_REPAIRED_INTEGRATED_20261021_a9a99c66.zip
+          </h3>
+          <p className="text-xs text-slate-400">
+            38.08 MB • 12,442 entries • Android Capacitor SDK 36 (Java 21), React / Node Backend, AI Orchestration
+          </p>
+        </div>
+        {onLoadMonolithArchive && (
+          <button
+            onClick={onLoadMonolithArchive}
+            className="whitespace-nowrap px-4 py-2 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-sm shadow-amber-500/20 flex items-center gap-2"
+          >
+            <ShieldCheck className="w-4 h-4" />
+            <span>Load & Ingest Monolith</span>
+          </button>
+        )}
+      </div>
 
       {/* Drag & Drop Upload Zone */}
       <div

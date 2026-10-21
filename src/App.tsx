@@ -22,6 +22,7 @@ import {
   runStaticCodeAnalysis,
 } from './engines/testEngine';
 import { calculateSha256 } from './utils/crypto';
+import { saveProjectsToStorage, loadProjectsFromStorage } from './engines/storage';
 import { Header } from './components/Header';
 import { Sidebar, ViewType } from './components/Sidebar';
 import { BottomPanel } from './components/BottomPanel';
@@ -44,6 +45,8 @@ import { InternetResearchView } from './components/views/InternetResearchView';
 import { ReportsView } from './components/views/ReportsView';
 import { SettingsView } from './components/views/SettingsView';
 import { ProjectsView } from './components/views/ProjectsView';
+import { SelfDevelopmentWorkspaceView } from './components/views/SelfDevelopmentWorkspaceView';
+import { VisualEngineeringStudioView } from './components/views/VisualEngineeringStudioView';
 
 interface ConsoleLog {
   id: string;
@@ -54,7 +57,7 @@ interface ConsoleLog {
 
 export default function App() {
   const [lang, setLang] = useState<Language>('en');
-  const [currentView, setCurrentView] = useState<ViewType>('dashboard');
+  const [currentView, setCurrentView] = useState<ViewType>('self_dev');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [logs, setLogs] = useState<ConsoleLog[]>([]);
@@ -151,8 +154,21 @@ export default function App() {
   }, [addLog]);
 
   useEffect(() => {
-    initializeDefaultProject();
-  }, [initializeDefaultProject]);
+    const saved = loadProjectsFromStorage();
+    if (saved && saved.length > 0) {
+      setProjects(saved);
+      setActiveProjectId(saved[0].id);
+      addLog(`Restored ${saved.length} persistent workspace project(s) from storage.`, 'SUCCESS');
+    } else {
+      initializeDefaultProject();
+    }
+  }, [initializeDefaultProject, addLog]);
+
+  useEffect(() => {
+    if (projects.length > 0) {
+      saveProjectsToStorage(projects);
+    }
+  }, [projects]);
 
   // Active project selector
   const activeProject = projects.find((p) => p.id === activeProjectId) || projects[0];
@@ -265,6 +281,30 @@ export default function App() {
     setActiveProjectId(newProject.id);
     addLog(`Project intake accepted: '${projectName}' with ${files.length} valid entries.`, 'SUCCESS');
     setCurrentView('dashboard');
+  };
+
+  const handleLoadMonolithArchive = async () => {
+    setIsProcessing(true);
+    addLog('Fetching ingested NOVIN NEXUS Monolith Archive (20261021)...', 'INFO');
+    try {
+      const res = await fetch('/api/nexus/load-project');
+      if (!res.ok) throw new Error('Failed to load monolith archive');
+      const monolithProject: Project = await res.json();
+      setProjects((prev) => {
+        const filtered = prev.filter((p) => p.id !== monolithProject.id);
+        return [monolithProject, ...filtered];
+      });
+      const shaPrefix = monolithProject.originalArchiveAudit?.sha256 ? monolithProject.originalArchiveAudit.sha256.slice(0, 16) : 'N/A';
+      addLog(
+        `Loaded authentic NOVIN NEXUS project: ${monolithProject.baselineFiles.length} files indexed, SHA-256: ${shaPrefix}...`,
+        'SUCCESS'
+      );
+      setCurrentView('dashboard');
+    } catch (err: any) {
+      addLog(`Failed to load monolith archive: ${err.message}`, 'ERROR');
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   // Test malicious / vulnerable archive to demonstrate G3, G4, G5, G10
@@ -454,6 +494,24 @@ object LeakedCredentials {
 
         {/* Center Main Stage */}
         <main className="flex-1 overflow-y-auto bg-slate-950">
+          {currentView === 'self_dev' && (
+            <SelfDevelopmentWorkspaceView
+              project={activeProject}
+              lang={lang}
+              onUpdateProject={(updated) =>
+                setProjects((prev) => prev.map((p) => (p.id === updated.id ? updated : p)))
+              }
+            />
+          )}
+
+          {currentView === 'visual_studio' && (
+            <VisualEngineeringStudioView
+              project={activeProject}
+              lang={lang}
+              onNavigate={setCurrentView}
+            />
+          )}
+
           {currentView === 'dashboard' && (
             <DashboardView
               project={activeProject}
@@ -474,11 +532,16 @@ object LeakedCredentials {
               onSelectProject={(p) => setActiveProjectId(p.id)}
               onExportZip={handleExportZip}
               onLoadNovinSample={initializeDefaultProject}
+              onLoadMonolithArchive={handleLoadMonolithArchive}
             />
           )}
 
           {currentView === 'zip_import' && (
-            <ZipImportView onImportComplete={handleImportComplete} lang={lang} />
+            <ZipImportView
+              onImportComplete={handleImportComplete}
+              lang={lang}
+              onLoadMonolithArchive={handleLoadMonolithArchive}
+            />
           )}
 
           {currentView === 'architecture' && (

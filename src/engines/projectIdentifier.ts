@@ -140,8 +140,19 @@ export function identifyProject(files: ProjectFile[]): ProjectIdentificationResu
 
     if (path.endsWith('androidmanifest.xml')) {
       hasAndroidManifest = true;
-      manifestContent = file.content;
+      // Prioritize main app manifests over plugin manifests
+      if (
+        !manifestContent ||
+        path.includes('/app/src/main/') ||
+        path.includes('android/app/')
+      ) {
+        manifestContent = file.content;
+      }
       packageManifests.push(file.path);
+    }
+
+    if (path.includes('capacitor') || file.content.includes('@capacitor/core')) {
+      frameworks.add('Capacitor Mobile Runtime');
     }
 
     // Languages
@@ -206,6 +217,54 @@ export function identifyProject(files: ProjectFile[]): ProjectIdentificationResu
     manifestData = parseAndroidManifest(manifestContent);
   }
 
+  // Cross-reference Gradle files for namespace, compileSdk, targetSdk, minSdk
+  let gradleNamespace: string | undefined;
+  let compileSdkFromGradle: number | undefined;
+  let targetSdkFromGradle: number | undefined;
+  let minSdkFromGradle: number | undefined;
+
+  for (const file of files) {
+    const p = file.path.toLowerCase();
+    if (p.endsWith('.gradle') || p.endsWith('.gradle.kts') || p.endsWith('variables.gradle') || p.endsWith('gradle.properties')) {
+      const c = file.content;
+      const nsMatch = c.match(/namespace\s*=?\s*["']([^"']+)["']/);
+      if (nsMatch && !gradleNamespace) gradleNamespace = nsMatch[1];
+
+      const appIdMatch = c.match(/applicationId\s*=?\s*["']([^"']+)["']/);
+      if (appIdMatch && !gradleNamespace) gradleNamespace = appIdMatch[1];
+
+      const cMatch = c.match(/(?:compileSdk|compileSdkVersion)\s*=?\s*(\d+)/);
+      if (cMatch && !compileSdkFromGradle) compileSdkFromGradle = parseInt(cMatch[1], 10);
+
+      const tMatch = c.match(/(?:targetSdk|targetSdkVersion)\s*=?\s*(\d+)/);
+      if (tMatch && !targetSdkFromGradle) targetSdkFromGradle = parseInt(tMatch[1], 10);
+
+      const mMatch = c.match(/(?:minSdk|minSdkVersion)\s*=?\s*(\d+)/);
+      if (mMatch && !minSdkFromGradle) minSdkFromGradle = parseInt(mMatch[1], 10);
+    }
+  }
+
+  if (manifestData) {
+    if (!manifestData.packageName && gradleNamespace) {
+      manifestData.packageName = gradleNamespace;
+    }
+    if (compileSdkFromGradle) manifestData.compileSdkVersion = compileSdkFromGradle;
+    if (targetSdkFromGradle) manifestData.targetSdkVersion = targetSdkFromGradle;
+    if (minSdkFromGradle) manifestData.minSdkVersion = minSdkFromGradle;
+  } else if (gradleNamespace || hasGradle) {
+    manifestData = {
+      packageName: gradleNamespace,
+      compileSdkVersion: compileSdkFromGradle,
+      targetSdkVersion: targetSdkFromGradle,
+      minSdkVersion: minSdkFromGradle,
+      permissions: [],
+      activities: [],
+      services: [],
+      receivers: [],
+      usesCleartextTraffic: false,
+    };
+  }
+
   // Determine Project Type by evidence weight
   let projectType: ProjectType = 'unknown';
   let buildSystem = 'None detected';
@@ -219,7 +278,7 @@ export function identifyProject(files: ProjectFile[]): ProjectIdentificationResu
       projectType = 'android_gradle';
       frameworks.add('Android SDK');
       buildSystem = hasGradleKts ? 'Gradle (Kotlin DSL)' : 'Gradle (Groovy DSL)';
-    } else if (hasJava && hasAndroidManifest) {
+    } else if (hasJava && (hasAndroidManifest || hasGradle)) {
       projectType = 'android_java';
       frameworks.add('Android SDK');
       buildSystem = 'Gradle (Groovy)';

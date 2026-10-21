@@ -102,7 +102,7 @@ export function runSecurityAudit(files: ProjectFile[], manifest?: ManifestData):
   // 2. Source Code & Configuration Inspection
   const secretPatterns = [
     {
-      regex: /(?:AIzaSy[0-9A-Za-z-_]{33})/,
+      regex: /(?:AIzaSy[0-9A-Za-z-_]{30,35})/,
       title: 'Exposed Google / Firebase API Key',
       severity: 'CRITICAL' as const,
       category: 'SECRET' as const,

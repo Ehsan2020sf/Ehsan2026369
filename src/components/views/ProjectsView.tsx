@@ -22,6 +22,7 @@ interface ProjectsViewProps {
   onSelectProject: (p: Project) => void;
   onExportZip: () => void;
   onLoadNovinSample: () => void;
+  onLoadMonolithArchive?: () => void;
 }
 
 export const ProjectsView: React.FC<ProjectsViewProps> = ({
@@ -31,6 +32,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
   onSelectProject,
   onExportZip,
   onLoadNovinSample,
+  onLoadMonolithArchive,
 }) => {
   const t = translations[lang];
 
@@ -48,7 +50,16 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          {onLoadMonolithArchive && (
+            <button
+              onClick={onLoadMonolithArchive}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-sm shadow-amber-500/20"
+            >
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Load Ingested NOVIN Archive</span>
+            </button>
+          )}
           <button
             onClick={onLoadNovinSample}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors"
@@ -58,10 +69,10 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
           </button>
           <button
             onClick={onExportZip}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-sm shadow-amber-500/20"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors"
           >
             <Download className="w-3.5 h-3.5" />
-            <span>Export Active Workspace (.ZIP)</span>
+            <span>Export (.ZIP)</span>
           </button>
         </div>
       </div>

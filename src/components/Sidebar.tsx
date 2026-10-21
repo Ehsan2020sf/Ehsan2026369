@@ -17,12 +17,15 @@ import {
   SearchCode,
   FileText,
   Sliders,
+  Box,
   X,
 } from 'lucide-react';
 import { Project } from '../types';
 import { Language, translations } from '../i18n/translations';
 
 export type ViewType =
+  | 'self_dev'
+  | 'visual_studio'
   | 'dashboard'
   | 'projects'
   | 'zip_import'
@@ -75,6 +78,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
       titleEn: 'COMMAND & CONTROL',
       titleFa: 'مرکز فرماندهی',
       items: [
+        {
+          id: 'self_dev',
+          labelKey: 'nav_self_dev',
+          icon: Sparkles,
+          badge: 'NN-04',
+          badgeColor: 'bg-emerald-500/20 text-emerald-300 font-bold',
+        },
+        {
+          id: 'visual_studio',
+          labelKey: 'nav_visual_studio',
+          icon: Box,
+          badge: '3D/2D',
+          badgeColor: 'bg-sky-500/20 text-sky-300 font-mono',
+        },
         { id: 'dashboard', labelKey: 'nav_dashboard', icon: LayoutDashboard },
         { id: 'projects', labelKey: 'nav_projects', icon: FolderGit2, badge: 1 },
         {
